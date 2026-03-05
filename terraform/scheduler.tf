@@ -6,9 +6,8 @@ resource "aws_scheduler_schedule" "stop_ec2" {
     mode = "OFF"
   }
 
-  # Based on current local timezone GMT -03:00, 18:00 Local is 21:00 UTC.
-  # Using UTC to avoid any AWS generic region TZ issues. 
-  schedule_expression = "cron(0 21 * * ? *)"
+  # Automatically stop the instance 2 hours after the Terraform apply
+  schedule_expression = "at(${replace(timeadd(timestamp(), "2h"), "Z", "")})"
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:ec2:stopInstances"

@@ -9,7 +9,7 @@ The project implements a **Serverless-lite** architecture on AWS, optimized for 
 - **Frontend**: A minimal HTML page with a JavaScript polling mechanism.
 - **Backend API**: A Python Flask application providing a RESTful interface.
 - **Infrastructure**: Provisioned entirely via Terraform (IaC).
-- **Cost Protection**: Automated daily shutdown using EventBridge Scheduler.
+- **Cost Protection**: Automatic shutdown scheduled 2 hours after deployment using EventBridge Scheduler.
 
 ---
 
@@ -26,7 +26,7 @@ graph TD
             SG[Security Group: Port 80 Open] --> EC2
         end
 
-        EB[EventBridge Scheduler] -- "ec2:StopInstances (18:00 Local)" --> EC2
+        EB[EventBridge Scheduler] -- "ec2:StopInstances (2 hours after apply)" --> EC2
         IAM[IAM Role] --> EB
     end
 
@@ -44,13 +44,13 @@ graph TD
 
 ## 3. AWS Services Used
 
-| Service                    | Purpose                                | Cost Detail                   |
-| :------------------------- | :------------------------------------- | :---------------------------- |
-| **Amazon EC2 (t4g.micro)** | Hosts the Python/Flask web server.     | Free Tier (750 hrs/month).    |
-| **Amazon VPC (Default)**   | Provides the networking environment.   | $0.00 (No NAT Gateways used). |
-| **AWS IAM**                | Manages permissions for auto-shutdown. | $0.00.                        |
-| **Amazon EventBridge**     | Schedules the 18:00 daily shutdown.    | Free Tier (Custom events).    |
-| **Terraform**              | Infrastructure as Code orchestration.  | N/A (Client-side).            |
+| Service                    | Purpose                                  | Cost Detail                   |
+| :------------------------- | :--------------------------------------- | :---------------------------- |
+| **Amazon EC2 (t4g.micro)** | Hosts the Python/Flask web server.       | Free Tier (750 hrs/month).    |
+| **Amazon VPC (Default)**   | Provides the networking environment.     | $0.00 (No NAT Gateways used). |
+| **AWS IAM**                | Manages permissions for auto-shutdown.   | $0.00.                        |
+| **Amazon EventBridge**     | Schedules the automatic 2-hour shutdown. | Free Tier (Custom events).    |
+| **Terraform**              | Infrastructure as Code orchestration.    | N/A (Client-side).            |
 
 ---
 
@@ -70,7 +70,7 @@ To achieve "Real-Time" without a refresh, WebSockets are the gold standard. Howe
 
 ### EventBridge Scheduler
 
-EventBridge Scheduler is used to stop the EC2 instance at 18:00 local time and start it at 06:00 local time. This is done to avoid incurring unnecessary costs due to accidentally leaving the instance running. Since this event is triggered once a day, it is a very cost-effective way to manage the lifecycle of the instance.
+EventBridge Scheduler is used to automatically stop the EC2 instance exactly two hours after the Terraform script has been applied. This is done to avoid incurring unnecessary costs during the interview or demo process, ensuring that the instance doesn't run indefinitely if forgotten. Every time the infrastructure is applied or updated, the one-shot shutdown is rescheduled for two hours later.
 
 ---
 
