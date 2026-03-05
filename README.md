@@ -80,12 +80,12 @@ Organizing the codebase separately from infrastructure is a key best practice.
 
 ```text
 .
-├── src/                # Application source code
+├── src/                # Application & Tests Layer
 │   ├── app.py          # Python Flask Backend
-│   └── templates/      # HTML Frontend
-├── tests/              # Unit Tests
-│   └── test_app.py
-└── terraform/          # Infrastructure as Code (AWS)
+│   ├── templates/      # HTML Frontend
+│   └── tests/          # Unit Tests
+│       └── test_app.py
+└── terraform/          # Infrastructure Layer (AWS)
     ├── scripts/        # Bootstrap scripts (setup.sh)
     └── *.tf            # Modular Terraform files (main, data, iam, etc.)
 ```
@@ -113,10 +113,11 @@ Before deploying, you can run the application locally and execute unit tests.
 2. **Run Unit Tests**:
 
    ```bash
-   PYTHONPATH=. pytest tests/
+   PYTHONPATH=. pytest src/tests/
    ```
 
 3. **Run App Locally**:
+
    ```bash
    python src/app.py
    # Access at http://localhost:80
