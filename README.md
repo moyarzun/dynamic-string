@@ -83,6 +83,8 @@ Organizing the codebase separately from infrastructure is a key best practice.
 ├── src/                # Application source code
 │   ├── app.py          # Python Flask Backend
 │   └── templates/      # HTML Frontend
+├── tests/              # Unit Tests
+│   └── test_app.py
 └── terraform/          # Infrastructure as Code (AWS)
     ├── scripts/        # Bootstrap scripts (setup.sh)
     └── *.tf            # Modular Terraform files (main, data, iam, etc.)
@@ -94,8 +96,31 @@ Organizing the codebase separately from infrastructure is a key best practice.
 
 ### Prerequisites
 
+- Python 3.x
 - AWS CLI configured with `default` credentials.
 - Terraform installed.
+
+### Local Development & Testing
+
+Before deploying, you can run the application locally and execute unit tests.
+
+1. **Install dependencies**:
+
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+2. **Run Unit Tests**:
+
+   ```bash
+   PYTHONPATH=. pytest tests/
+   ```
+
+3. **Run App Locally**:
+   ```bash
+   python src/app.py
+   # Access at http://localhost:80
+   ```
 
 ### Deployment
 
@@ -109,7 +134,7 @@ Organizing the codebase separately from infrastructure is a key best practice.
    terraform apply -auto-approve
    ```
 
-### Testing the Solution
+### Test
 
 1. Get the URL and Curl Example from the Terraform outputs:
    - **Frontend URL**: `http://<EC2_IP>`
