@@ -54,15 +54,23 @@ graph TD
 
 ---
 
-## 4. Why these Decisions?
+## 4. Technical Decisions
 
-### Why EC2 t4g.micro?
+### EC2 t4g.micro
 
 This is a simple proof-of-concept project. While AWS Lambda is an alternative, a small EC2 instance allows for a very straightforward Flask implementation where the dynamic string can be kept in-memory for simplicity, avoiding the need for a database like RDS or DynamoDB, and reducing architectural complexity and cost.
 
-### Why Polling?
+### In-Memory Storage
+
+The dynamic string is stored in-memory, which means it will be lost if the instance is stopped or restarted. This is a deliberate design decision to keep the architecture simple and cost-effective. For a production environment, a database like DynamoDB or RDS would be used to store the string.
+
+### Polling
 
 To achieve "Real-Time" without a refresh, WebSockets are the gold standard. However, they add significant complexity (connection management, load balancer requirements, etc.). Polling every 1.5 seconds provides a perceived "real-time" experience while keeping the code simple and clean.
+
+### EventBridge Scheduler
+
+EventBridge Scheduler is used to stop the EC2 instance at 18:00 local time and start it at 06:00 local time. This is done to avoid incurring unnecessary costs due to accidentally leaving the instance running. Since this event is triggered once a day, it is a very cost-effective way to manage the lifecycle of the instance.
 
 ---
 
@@ -123,3 +131,5 @@ Organizing the codebase separately from infrastructure is a key best practice.
 4. **Containerization**: Use **Docker** and **AWS Fargate** for a more scalable architecture.
 5. **Monitoring**: Add **Amazon CloudWatch** to monitor the service and set up alarms for high CPU usage or error rates.
 6. **CI/CD**: Implement a **GitHub Actions** pipeline to automate the deployment of the service to AWS.
+7. **Admin UI**: Add an admin UI to update the string. This interface should be protected with a password and reutilize the current API.
+8. **Token Security**: The API should implement authentication via tokens to ensure that only authorized users can update the string.
