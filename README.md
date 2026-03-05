@@ -107,7 +107,7 @@ Before deploying, you can run the application locally and execute unit tests.
 1. **Install dependencies**:
 
    ```bash
-   pip install -r requirements-dev.txt
+   pip install -r src/requirements-dev.txt
    ```
 
 2. **Run Unit Tests**:
@@ -121,6 +121,11 @@ Before deploying, you can run the application locally and execute unit tests.
    ```bash
    python src/app.py
    # Access at http://localhost:80
+   ```
+
+4. **Update the string via terminal**:
+   ```bash
+   curl -X POST -H 'Content-Type: application/json' -d '{"string": "This is a test"}' http://localhost:80/api/string
    ```
 
 ### Deployment
@@ -142,9 +147,9 @@ Before deploying, you can run the application locally and execute unit tests.
    - **API Update Endpoint**: `http://<EC2_IP>/api/string`
    - **Curl Example**: `update_string_curl_example`
 
-2. Update the string via terminal using the provided example:
+2. Update the string via terminal:
    ```bash
-   curl -X POST -H 'Content-Type: application/json' -d '{"string": "Terraform Best Practices!"}' http://<EC2_IP>/api/string
+   curl -X POST -H 'Content-Type: application/json' -d '{"string": "This is a test"}' http://<EC2_IP>/api/string
    ```
 
 ---
