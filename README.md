@@ -123,7 +123,7 @@ Organizing the codebase separately from infrastructure is a key best practice.
 
 ---
 
-## 7. Next Steps (Future Enhancements)
+## 7. Next Steps
 
 1. **Persistence Layer**: Introduce **Amazon DynamoDB** or **Amazon RDS** to keep the string safe across server restarts.
 2. **WebSockets**: Replace polling with a push mechanism for ultra-low latency.
