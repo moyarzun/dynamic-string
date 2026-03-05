@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic String Service</title>
+  </head>
+  <body
+    style="
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    "
+  >
+    <h1 id="dynamic-string">Loading...</h1>
+
+    <script>
+      const stringElement = document.getElementById("dynamic-string");
+      let currentString = "";
+
+      async function fetchString() {
+        try {
+          const response = await fetch("/api/string");
+          if (response.ok) {
+            const data = await response.json();
+            if (data.string !== currentString) {
+              stringElement.innerText = `The saved string is ${data.string}`;
+              currentString = data.string;
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching the dynamic string:", error);
+        }
+      }
+
+      fetchString();
+      setInterval(fetchString, 1500);
+    </script>
+  </body>
+</html>
