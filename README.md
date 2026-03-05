@@ -70,7 +70,7 @@ To achieve "Real-Time" without a refresh, WebSockets are the gold standard. Howe
 
 ### EventBridge Scheduler
 
-EventBridge Scheduler is used to automatically stop the EC2 instance exactly two hours after the Terraform script has been applied. This is done to avoid incurring unnecessary costs during the interview or demo process, ensuring that the instance doesn't run indefinitely if forgotten. Every time the infrastructure is applied or updated, the one-shot shutdown is rescheduled for two hours later.
+EventBridge Scheduler is used to automatically stop the EC2 instance exactly two hours after the Terraform script has been applied. This is done to avoid incurring unnecessary costs, ensuring that the instance doesn't run indefinitely if forgotten. The EC2 instance can be started again manually or by running the `terraform apply` command again.
 
 ---
 
